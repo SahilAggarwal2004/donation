@@ -167,8 +167,6 @@ export default function Profile() {
                       className={`w-full px-6 py-2 text-lg ${edit ? "text-gray-600" : ""
                         }  bg-gray-100 rounded-lg`}
                       type="text"
-                      required={true}
-                      minLength={1}
                       defaultValue={data?.image}
                     ></input>
                   </div>

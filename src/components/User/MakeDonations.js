@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { toast } from 'react-toastify'
 import { useDataContext } from '../../context/ContextProvider'
 import { initiateDonation } from '../../firebase'
@@ -10,10 +10,11 @@ const MakeDonations = () => {
     const { userData: data, setUserDataUpdated } = useDataContext()
     const { user, email } = useAuth()
     const navigate = useNavigate()
+    const description = useRef()
 
     async function submit(event) {
         event.preventDefault()
-        const { success } = await initiateDonation(user)
+        const { success } = await initiateDonation(user, description.current.value)
         if (!success) return toast.error('Some error occurred...')
         setUserDataUpdated(true)
         toast.success('Donation initiated')
@@ -43,7 +44,7 @@ const MakeDonations = () => {
                                     <input className='rounded-md w-4.8 px-2 py-1 m-1 bg-gray-100 hover:bg-white' type="phone" placeholder='Mobile' value={data?.mobile} />
                                     <input className='rounded-md w-4.8 px-2 py-1 m-1 bg-gray-100 hover:bg-white' type="number" placeholder='Pincode' value={data?.pincode} />
                                     <input className='rounded-md w-9.8 px-2 py-1 m-1 bg-gray-100 hover:bg-white' type="text" placeholder='Address' value={data?.address} />
-                                    <input className='rounded-md w-9.8 px-2 py-1 m-1 bg-gray-100 hover:bg-white' type="text" placeholder='Description (Regarding type of donation)' required />
+                                    <input ref={description} className='rounded-md w-9.8 px-2 py-1 m-1 bg-gray-100 hover:bg-white' type="text" placeholder='Description (Regarding type of donation)' required />
                                     <button type='submit' className="font-semibold my-2 mx-auto btn bg-gray-200 rounded-lg px-4 py-2 m-2">Submit</button>
                                 </form>
                             </div>

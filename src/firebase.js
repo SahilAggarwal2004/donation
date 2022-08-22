@@ -74,10 +74,11 @@ export async function initiateDonation(uid, description) {
         if (info.exists()) {
             donations = info.data().donations || []
             donations.push(donation)
+            console.log(donations)
             await updateDoc(ref, { donations })
         }
         return { success: true, donations }
-    } catch { return { success: false } }
+    } catch (error) { console.log(error); return { success: false } }
 }
 
 export async function acceptDonation(uid, id, ngoId) {

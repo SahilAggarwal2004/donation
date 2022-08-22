@@ -59,11 +59,6 @@ const Money = () => {
                                         type="money"
                                         placeholder="Amount to be donated"
                                     />
-                                    <input
-                                        className="rounded-md w-9.8 px-2 py-1 m-1 bg-gray-100 hover:bg-white"
-                                        type="text"
-                                        placeholder="NGO name"
-                                    />
                                     <button className="font-semibold my-2 mx-auto btn bg-gray-200 rounded-lg px-4 py-2 m-2">
                                         Submit
                                     </button>
