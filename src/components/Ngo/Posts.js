@@ -72,7 +72,7 @@ export default function Posts() {
                     {data?.name}
                   </div>
                   <div className="text-sm text-gray-500 tracking-wide">
-                    {(Date.now() - date) / (60 * 60 * 1000)}
+                    {Math.floor((Date.now() - date) / (60 * 60 * 1000))} hours
                   </div>
                 </div>
               </div>
