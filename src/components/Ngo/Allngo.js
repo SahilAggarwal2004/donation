@@ -73,14 +73,14 @@ const Allngo = () => {
                 <div className="text-neutral-700 pt-2">{description}</div>
               </div>
               <div className="flex flex-col gap-2 sm:flex-row sm:gap-0  justify-between items-center ">
-                <div>
+                {/* <div>
                   <Link
                     to={`/ngo/id/${uid}`}
                     className="bg-gradient-to-r from-colorPrimary  to-colorSecondary text-white rounded-2xl px-6 py-2 text-xl font-medium  hover:border-2 transition-all duration-200 ease-in-out "
                   >
                     More info
                   </Link>
-                </div>
+                </div> */}
               </div>
             </div>
           ))}
