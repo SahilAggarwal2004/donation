@@ -23,7 +23,7 @@ const Dashboard = () => {
 
   async function accept(uid, id) {
     const { success } = await acceptDonation(uid, id, ngo);
-    if (!success) toast.error("Some error occured...");
+    if (!success) return toast.error("Some error occured...");
     toast.success("Donation accepted!");
   }
 
@@ -50,9 +50,8 @@ const Dashboard = () => {
 
       {/* for the showcase of exact data */}
       <div
-        className={`${
-          dashboardAnimation === "" ? "hidden" : ""
-        }  mt-24 sm:mt-8`}
+        className={`${dashboardAnimation === "" ? "hidden" : ""
+          }  mt-24 sm:mt-8`}
       >
         <div className=" px-2 xsm:px-12 grid xlg:grid-cols-3 lg:grid-cols-2 sm:grid-cols-1 gap-12 ">
           {donations?.map(
@@ -107,9 +106,8 @@ const Dashboard = () => {
                   <div className="text-neutral-700 pt-2">{password}</div>
                 </div>
                 <div
-                  className={`flex flex-col gap-2 sm:flex-row sm:gap-0 justify-between items-center ${
-                    status === "pending" ? "" : "hidden"
-                  }`}
+                  className={`flex flex-col gap-2 sm:flex-row sm:gap-0 justify-between items-center ${status === "pending" ? "" : "hidden"
+                    }`}
                 >
                   <div className="flex flex-col sm:flex-row  gap-4 items-center">
                     <button

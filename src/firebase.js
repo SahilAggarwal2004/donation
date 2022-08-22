@@ -86,6 +86,7 @@ export async function acceptDonation(uid, id, ngoId) {
         const ref = doc(db, `/users/${uid}`)
         const info = await getDoc(ref)
         if (info.exists()) {
+            console.log(info.data())
             const donations = info.data().donations || []
             for (let i = 0; i < donations.length; i++) {
                 const donation = donations[i]
@@ -129,10 +130,10 @@ export async function getAllDonations(pincode) {
         const { docs } = await getDocs(collection(db, '/users'))
         let donations = []
         docs.forEach(doc => {
-            const { uid, name, pincode: userPincode, mobile, address, image, donations: userDonations } = doc.data()
+            const { name, pincode: userPincode, mobile, address, image, donations: userDonations } = doc.data()
             if (userPincode === pincode) {
                 userDonations?.forEach((donation, i) => {
-                    userDonations[i] = { ...donation, uid, name, mobile, address, image }
+                    userDonations[i] = { ...donation, uid: doc.id, name, mobile, address, image }
                 })
                 donations.push(...(userDonations || []))
             }
