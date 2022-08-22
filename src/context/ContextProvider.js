@@ -21,7 +21,7 @@ const ContextProvider = props => {
 
     useEffect(() => {
         if (!user || !userDataUpdated) return
-        getUserData(ngo).then(({ success, data }) => {
+        getUserData(user).then(({ success, data }) => {
             if (success) {
                 setUserData(data)
                 setUserDataUpdated(false)
