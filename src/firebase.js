@@ -128,8 +128,13 @@ export async function getAllDonations(pincode) {
         const { docs } = await getDocs(collection(db, '/users'))
         let donations = []
         docs.forEach(doc => {
-            const data = doc.data()
-            if (data.pincode === pincode) donations.push(...(data.donations || []))
+            const { uid, name, pincode: userPincode, mobile, address, image, donations: userDonations } = doc.data()
+            if (userPincode === pincode) {
+                userDonations?.forEach((donation, i) => {
+                    userDonations[i] = { ...donation, uid, name, mobile, address, image }
+                })
+                donations.push(...(userDonations || []))
+            }
         })
         return { success: Boolean(donations.length), donations }
     } catch { return { success: false } }

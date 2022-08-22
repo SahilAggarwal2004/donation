@@ -2,9 +2,13 @@ import React from "react";
 // import styled from "styled-components";
 // import PropTypes from "prop-types";
 import Logo from "../../components/Logo";
-import profileImage from "./images.jpg";
+import dummyImage from "../../images/dummy.webp";
 import { Link } from "react-router-dom";
+import { useDataContext } from "../../context/ContextProvider";
+
 const NavBar = () => {
+  const { ngoData: data } = useDataContext()
+
   return (
     <>
       <div className="relative">
@@ -60,7 +64,7 @@ const NavBar = () => {
             </Link>
             <Link exact to="/ngo/profile">
               <img
-                src={profileImage}
+                src={data?.image || dummyImage}
                 className="w-14 h-14 rounded-full "
                 alt="Ngo logo"
               ></img>

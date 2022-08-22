@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useRef, useState } from "react";
-import ngoLogo from "./images.jpg";
-import eventImage from "./download.jpg";
+import dummyImage from "../../images/dummy.webp";
 import { setEvent } from "../../firebase";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
@@ -67,7 +66,7 @@ export default function Posts() {
             </div>
             {data?.events?.map(({ title, description, image, url, date }) => <div key={date} className="flex flex-col px-8 py-4  rounded-3xl shadow-xl w-full gap-6 ">
               <div className="flex gap-6 items-center">
-                <img src={ngoLogo} className="rounded-full w-16 h-16" />
+                <img src={data?.image || dummyImage} className="rounded-full w-16 h-16" />
                 <div className="flex flex-col p-1 gap-.5">
                   <div className="text-2xl tracking-wider text-gray-800 font-extralight">
                     {data?.name}
@@ -161,7 +160,7 @@ export default function Posts() {
           </div>
           <div className="hidden sm:flex flex-col  w-1/3 gap-8">
             <div className="flex flex-col justify-center items-center w-full p-6 pt-12 rounded-2xl shadow-2xl gap-4 relative">
-              <img src={ngoLogo} className="rounded-full shadow-xl w-20 h-20" />
+              <img src={data?.image || dummyImage} className="rounded-full shadow-xl w-20 h-20" />
               <div className="text-2xl font-medium tracking-wide text-gray-700">
                 Donate India
               </div>
