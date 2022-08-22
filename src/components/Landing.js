@@ -10,7 +10,7 @@ const Landing = () => {
   return (
     <>
       <div>
-        <div className="flex border-b-4 drop-shadow-lg justify-between">
+        <div className="flex border-b-4 drop-shadow-lg justify-between px-12">
           <Link to="/">
             <div className="flex m-4">
               <Logo dimension={2} />
@@ -20,20 +20,21 @@ const Landing = () => {
             </div>
           </Link>
 
-          <div className="flex justify-center items-center">
-            <ul className="flex">
-              <li className="mx-4 -my-2 font-semibold hover:underline cursor-pointer">
-                About
+          <div className="flex justify-center items-center ">
+            <ul className="flex items-center">
+              <a href="#about">
+                <li className="mx-4 -my-2 font-semibold hover:underline cursor-pointer text-lg">
+                  About
+                </li>
+              </a>
+              <li className="mx-4 -my-2 font-semibold hover:underline cursor-pointer text-lg">
+                NGOs
               </li>
-              <li className="mx-4 -my-2 font-semibold hover:underline cursor-pointer">
-                Partners
-              </li>
-              <li className="mx-4 -my-2 font-semibold hover:underline cursor-pointer">
-                Testimonials
-              </li>
-              <li className="mx-4 -my-2 font-semibold hover:underline cursor-pointer">
-                Register &gt;
-              </li>
+              <a href="#testimonials">
+                <li className="mx-4 -my-2 font-semibold hover:underline cursor-pointer text-lg">
+                  Testimonials
+                </li>
+              </a>
             </ul>
           </div>
         </div>
@@ -70,10 +71,13 @@ const Landing = () => {
         </div>
       </div>
       {/* <Login></Login> */}
-      <Testimonials />
+      <div id="testimonials">
+        <Testimonials />
+      </div>
       {/* <Register></Register> */}
-      <About></About>
-
+      <div id="about">
+        <About></About>
+      </div>
       <Footer></Footer>
     </>
   );
