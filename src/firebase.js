@@ -123,6 +123,18 @@ export async function completeDonation(uid, id, password) {
     } catch { return { success: false } }
 }
 
+export async function getAllDonations(pincode) {
+    try {
+        const { docs } = await getDocs(collection(db, '/users'))
+        let donations = []
+        docs.forEach(doc => {
+            const data = doc.data()
+            if (data.pincode === pincode) donations.push(...(data.donations || []))
+        })
+        return { success: Boolean(donations.length), donations }
+    } catch { return { success: false } }
+}
+
 export async function signupNgo(email, password) {
     try {
         localStorage.setItem('auth-type', 'ngo')
@@ -154,6 +166,18 @@ export async function getNgos(pincode = 'all') {
             if (pincode === 'all' || data.pincode === pincode) ngos.push(data)
         })
         return { success: Boolean(ngos.length), ngos }
+    } catch { return { success: false } }
+}
+
+export async function getAllEvents() {
+    try {
+        const { docs } = await getDocs(collection(db, '/ngos'))
+        let events = []
+        docs.forEach(doc => {
+            const data = doc.data()
+            events.push(...(data.events || []))
+        })
+        return { success: Boolean(events.length), events }
     } catch { return { success: false } }
 }
 

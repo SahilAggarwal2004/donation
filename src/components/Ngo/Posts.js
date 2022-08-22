@@ -65,12 +65,12 @@ export default function Posts() {
                 Recent events
               </button>
             </div>
-            {data.events?.map(({ title, description, image, url, date }) => <div key={date} className="flex flex-col px-8 py-4  rounded-3xl shadow-xl w-full gap-6 ">
+            {data?.events?.map(({ title, description, image, url, date }) => <div key={date} className="flex flex-col px-8 py-4  rounded-3xl shadow-xl w-full gap-6 ">
               <div className="flex gap-6 items-center">
                 <img src={ngoLogo} className="rounded-full w-16 h-16" />
                 <div className="flex flex-col p-1 gap-.5">
                   <div className="text-2xl tracking-wider text-gray-800 font-extralight">
-                    {data.name}
+                    {data?.name}
                   </div>
                   <div className="text-sm text-gray-500 tracking-wide">
                     2h ago

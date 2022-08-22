@@ -94,7 +94,7 @@ export default function Profile() {
             <div className="w-full ">
               <div className="h-36 rounded-tl-3xl w-full bg-gray-200 relative ">
                 <img
-                  src={data.image || dummyImage}
+                  src={data?.image || dummyImage}
                   alt="User Logo"
                   className="absolute rounded-full w-28 h-28 top-[85%] left-8"
                 ></img>
@@ -149,7 +149,7 @@ export default function Profile() {
                       type="text"
                       required={true}
                       minLength={1}
-                      defaultValue={data.name}
+                      defaultValue={data?.name}
                     ></input>
                   </div>
                 </div>
@@ -169,7 +169,7 @@ export default function Profile() {
                       type="text"
                       required={true}
                       minLength={1}
-                      defaultValue={data.image}
+                      defaultValue={data?.image}
                     ></input>
                   </div>
                 </div>
@@ -200,7 +200,7 @@ export default function Profile() {
                       type="text"
                       required={true}
                       minLength={1}
-                      defaultValue={data.mobile}
+                      defaultValue={data?.mobile}
                     ></input>
                   </div>
                 </div>
@@ -218,7 +218,7 @@ export default function Profile() {
                       type="text"
                       required={true}
                       minLength={1}
-                      defaultValue={data.address}
+                      defaultValue={data?.address}
                     ></textarea>
                   </div>
                 </div>
@@ -235,7 +235,7 @@ export default function Profile() {
                       type="text"
                       required={true}
                       minLength={1}
-                      defaultValue={data.pincode}
+                      defaultValue={data?.pincode}
                     ></input>
                   </div>
                 </div>

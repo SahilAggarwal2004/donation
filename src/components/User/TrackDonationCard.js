@@ -11,7 +11,7 @@ export default function TrackDonationCard({ id, status, description, ngoid, date
   }
   const [color] = useState(status === "active" ? "red" : "green");
   const [dropDown, setDropDown] = useState("up");
-  const [data, setData] = useState({})
+  const [data, setData] = useState()
   const { user } = useAuth()
   const password = useRef()
   const { setUserDataUpdated } = useDataContext()
