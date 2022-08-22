@@ -5,10 +5,6 @@ import ContextProvider from "./context/ContextProvider";
 import Loader from "./components/Loader";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import MakeDonations from "./components/User/MakeDonations";
-import UserProfile from "./components/User/UserProfile";
-import UserHome from "./components/User/UserHome";
-import Money from "./components/User/Money";
 
 const Landing = lazy(() => import("./components/Landing"));
 const Navbar = lazy(() => import("./components/User/Navbar"));
@@ -22,6 +18,13 @@ const Posts = lazy(() => import("./components/Ngo/Posts"));
 const DashBoardMoreDetails = lazy(() =>
   import("./components/Ngo/DashBoardMoreDetails")
 );
+
+const MakeDonations = lazy(() => import("./components/User/MakeDonations"));
+const UserProfile = lazy(() => import("./components/User/UserProfile"));
+const UserHome = lazy(() => import("./components/User/UserHome"));
+const Money = lazy(() => import("./components/User/Money"));
+const Allngo = lazy(() => import("./components/Ngo/Allngo"));
+const TrackDonation = lazy(() => import("./components/User/TrackDonation"));
 function App() {
   const location = useLocation();
 
@@ -42,15 +45,22 @@ function App() {
           <Route path="/ngo/dashboard" element={<Dashboard />} />
           <Route path="/ngo/profile" element={<Profile />} />
           <Route path="/ngo" element={<Posts />} />
+          <Route path="/ngos" element={<Allngo />} />
           <Route path="/ngo/dashmore" element={<DashBoardMoreDetails />} />
           <Route path="/user/profile" element={<UserProfile />} />
           <Route path="/user" element={<UserHome />} />
+          <Route path="/user/donations" element={<TrackDonation />} />
 
           {/* <Route path="/user" element={<Comp />} />
             <Route path="/ngo" element={<Comp />} /> */}
         </Routes>
       </ContextProvider>
-      <ToastContainer position="bottom-right" pauseOnFocusLoss={false} pauseOnHover={false} autoClose={2000} />
+      <ToastContainer
+        position="bottom-right"
+        pauseOnFocusLoss={false}
+        pauseOnHover={false}
+        autoClose={2000}
+      />
     </Suspense>
   );
 }
