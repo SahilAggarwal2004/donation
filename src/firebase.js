@@ -179,8 +179,11 @@ export async function getAllEvents() {
         const { docs } = await getDocs(collection(db, '/ngos'))
         let events = []
         docs.forEach(doc => {
-            const data = doc.data()
-            events.push(...(data.events || []))
+            const { name, image, events: ngoEvents } = doc.data()
+            ngoEvents?.forEach((event, i) => {
+                ngoEvents[i] = { ...event, name, ngoImage: image }
+            })
+            events.push(...(ngoEvents || []))
         })
         return { success: Boolean(events.length), events }
     } catch { return { success: false } }

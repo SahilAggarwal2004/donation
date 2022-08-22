@@ -115,7 +115,7 @@ function Profile(props) {
                 ></img>
                 <div className="absolute top-full left-44 mt-4 flex flex-col gap-1">
                   <h1 className="text-xl sm:text-2xl font-bold tracking-wide">
-                    Donate India
+                    {data?.name}
                   </h1>
                   <h1 className="sm:hidden  font-light tracking-widest text-xs">
                     Update is not possible in mobile browser

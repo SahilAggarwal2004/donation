@@ -19,7 +19,12 @@ const MakeDonations = () => {
         toast.success('Donation initiated')
     }
 
-    useEffect(() => { if (!data) navigate('/user/profile') })
+    useEffect(() => {
+        if (!data) {
+            toast.warn('Please complete your profile first')
+            navigate("/user/profile");
+        }
+    });
 
     return (
         <>
