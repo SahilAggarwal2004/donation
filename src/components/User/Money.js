@@ -3,21 +3,21 @@ import about1 from '../../images/about1.png'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 
-// const Register = ({ type }) => {
-//     const navigate = useNavigate()
-//     const amount = useRef()
-//     const ngo = useRef()
+const Register = ({ type }) => {
+    // const navigate = useNavigate()
+    // const amount = useRef()
+    // const ngo = useRef()
   
 
-//     async function submit(event) {
-//         event.preventDefault()
-//         if (type === 'User') {
-//           const { success, error } = await signupUser(amount.current.value, ngo.current.value)
-//           if (!success) return toast.error(error)
-//           toast.success('Amount Deposited')
-//           navigate('/user')
-//         }
-//       }
+    // async function submit(event) {
+    //     event.preventDefault()
+    //     if (type === 'User') {
+    //       const { success, error } = await signupUser(amount.current.value, ngo.current.value)
+    //       if (!success) return toast.error(error)
+    //       toast.success('Amount Deposited')
+    //       navigate('/user')
+    //     }
+    //   }
 
     return (
         <>
@@ -46,5 +46,6 @@ import { useNavigate } from 'react-router-dom'
             </div>
         </>
     )
+}
 
 export default Money
