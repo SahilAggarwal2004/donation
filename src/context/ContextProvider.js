@@ -12,7 +12,7 @@ const ContextProvider = props => {
     const location = useLocation()
     const { user, ngo } = useAuth()
     const notLogged = ['/', '/user/signup', '/user/login', '/ngo/signup', '/ngo/login', '/ngo/all', '/ngo/id/:uid']
-    const userLogged = ['/user', '/user/profile', '/ngo/id/:uid', '/user/donate', '/user/donations', '/ngo/all']
+    const userLogged = ['/user', '/user/profile', '/ngo/id/:uid', '/user/donate', '/user/donate', '/user/money', '/ngo/all']
     const ngoLogged = ['/ngo', '/ngo/profile', '/ngo/id/:uid', '/ngo/all', '/ngo/dashboard', '/ngo/dashmore']
     const [userData, setUserData] = useState({})
     const [ngoData, setNgoData] = useState({})
