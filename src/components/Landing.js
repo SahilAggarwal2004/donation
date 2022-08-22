@@ -27,9 +27,11 @@ const Landing = () => {
                   About
                 </li>
               </a>
-              <li className="mx-4 -my-2 font-semibold hover:underline cursor-pointer text-lg">
-                NGOs
-              </li>
+              <Link to="/ngos">
+                <li className="mx-4 -my-2 font-semibold hover:underline cursor-pointer text-lg">
+                  NGOs
+                </li>
+              </Link>
               <a href="#testimonials">
                 <li className="mx-4 -my-2 font-semibold hover:underline cursor-pointer text-lg">
                   Testimonials

@@ -8,19 +8,25 @@ import { useDataContext } from "../../context/ContextProvider";
 
 export default function Posts() {
   const [post, setPost] = useState("flex");
-  const title = useRef()
-  const description = useRef()
-  const image = useRef()
-  const url = useRef()
-  const { ngo } = useAuth()
-  const { setNgoDataUpdated, ngoData: data } = useDataContext()
+  const title = useRef();
+  const description = useRef();
+  const image = useRef();
+  const url = useRef();
+  const { ngo } = useAuth();
+  const { setNgoDataUpdated, ngoData: data } = useDataContext();
 
   async function submit(event) {
-    event.preventDefault()
-    const { success, error } = await setEvent(ngo, title.current.value, description.current.value, image.current.value, url.current.value)
-    if (!success) return toast.error(error)
-    setNgoDataUpdated(true)
-    toast.success('New event added!')
+    event.preventDefault();
+    const { success, error } = await setEvent(
+      ngo,
+      title.current.value,
+      description.current.value,
+      image.current.value,
+      url.current.value
+    );
+    if (!success) return toast.error(error);
+    setNgoDataUpdated(true);
+    toast.success("New event added!");
   }
 
   return (
@@ -64,32 +70,42 @@ export default function Posts() {
                 Recent events
               </button>
             </div>
-            {data?.events?.map(({ title, description, image, url, date }) => <div key={date} className="flex flex-col px-8 py-4  rounded-3xl shadow-xl w-full gap-6 ">
-              <div className="flex gap-6 items-center">
-                <img src={data?.image || dummyImage} className="rounded-full w-16 h-16" />
-                <div className="flex flex-col p-1 gap-.5">
-                  <div className="text-2xl tracking-wider text-gray-800 font-extralight">
-                    {data?.name}
+            {data?.events?.map(({ title, description, image, url, date }) => (
+              <div
+                key={date}
+                className="flex flex-col px-8 py-4  rounded-3xl shadow-xl w-full gap-6 "
+              >
+                <a href={url} target="_blank">
+                  <div className="flex gap-6 items-center">
+                    <img
+                      src={data?.image || dummyImage}
+                      className="rounded-full w-16 h-16"
+                    />
+                    <div className="flex flex-col p-1 gap-.5">
+                      <div className="text-2xl tracking-wider text-gray-800 font-extralight">
+                        {data?.name}
+                      </div>
+                      <div className="text-sm text-gray-500 tracking-wide">
+                        {Math.floor((Date.now() - date) / (60 * 60 * 1000))}{" "}
+                        hours
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-sm text-gray-500 tracking-wide">
-                    {Math.floor((Date.now() - date) / (60 * 60 * 1000))} hours
+                  <div>
+                    <img src={image} className="w-full h-64"></img>
                   </div>
+                </a>
+                <div className="font-semibold text-2xl pl-3 font-mono">
+                  {title}
                 </div>
+                <div className="font-light leading-7 -mt-3">{description}</div>
               </div>
-              <div>
-                <img src={image} className="w-full h-64"></img>
-              </div>
-              <div className="font-semibold text-2xl pl-3 font-mono">
-                {title}
-              </div>
-              <div className="font-light leading-7 -mt-3">
-                {description}
-              </div>
-            </div>)}
+            ))}
           </div>
           <div
-            className={`w-full sm:w-2/3 shadow-[-4px_0px_24px_rgba(0,0,0,.4)]  shadow-slate-300 rounded-3xl px-8 py-8 pt-16  flex-col gap-8 text-gray-600 relative ${post === "flex" ? "hidden" : "flex"
-              }`}
+            className={`w-full sm:w-2/3 shadow-[-4px_0px_24px_rgba(0,0,0,.4)]  shadow-slate-300 rounded-3xl px-8 py-8 pt-16  flex-col gap-8 text-gray-600 relative ${
+              post === "flex" ? "hidden" : "flex"
+            }`}
           >
             <div
               className="absolute top-7 right-10"
@@ -153,14 +169,20 @@ export default function Posts() {
                   ref={url}
                 ></input>
               </div>
-              <button type='submit' className="bg-gradient-to-r from-gradient1a to-gradient1b text-white py-3 text-3xl tracking-widest font-mono uppercase rounded-3xl hover:-translate-y-1 transition-all duration-200 hover:scale-[1.01] ">
+              <button
+                type="submit"
+                className="bg-gradient-to-r from-gradient1a to-gradient1b text-white py-3 text-3xl tracking-widest font-mono uppercase rounded-3xl hover:-translate-y-1 transition-all duration-200 hover:scale-[1.01] "
+              >
                 Submit
               </button>
             </form>
           </div>
           <div className="hidden sm:flex flex-col  w-1/3 gap-8">
             <div className="flex flex-col justify-center items-center w-full p-6 pt-12 rounded-2xl shadow-2xl gap-4 relative">
-              <img src={data?.image || dummyImage} className="rounded-full shadow-xl w-20 h-20" />
+              <img
+                src={data?.image || dummyImage}
+                className="rounded-full shadow-xl w-20 h-20"
+              />
               <div className="text-2xl font-medium tracking-wide text-gray-700">
                 {data?.name}
               </div>
@@ -186,5 +208,6 @@ export default function Posts() {
           </div>
         </div>
       </div>
-    </>)
+    </>
+  );
 }
