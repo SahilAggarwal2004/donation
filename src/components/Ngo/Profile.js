@@ -27,7 +27,7 @@ export default function Profile() {
   const pincode = useRef();
 
   async function submit(event) {
-    event.preventDeafult();
+    event.preventDefault();
     const { success } = await setNgoData(
       ngo,
       name.current.value,
@@ -66,9 +66,8 @@ export default function Profile() {
           <div className="flex flex-col sm:flex-row gap-12 sm:gap-28 mt-8">
             <div className="flex flex-row sm:flex-col  gap-5 tracking-wider">
               <div
-                className={`text-xl cursor-pointer ${
-                  page === "profile" ? "font-bold tracking-widest text-2xl" : ""
-                }`}
+                className={`text-xl cursor-pointer ${page === "profile" ? "font-bold tracking-widest text-2xl" : ""
+                  }`}
                 onClick={() => {
                   setpage("profile");
                 }}
@@ -76,11 +75,10 @@ export default function Profile() {
                 Profile
               </div>
               <div
-                className={`hidden sm:block text-xl cursor-pointer ${
-                  page === "password"
-                    ? "font-bold tracking-widest text-2xl"
-                    : ""
-                }`}
+                className={`hidden sm:block text-xl cursor-pointer ${page === "password"
+                  ? "font-bold tracking-widest text-2xl"
+                  : ""
+                  }`}
                 onClick={() => {
                   setpage("password");
                 }}
@@ -88,9 +86,8 @@ export default function Profile() {
                 Password
               </div>
               <div
-                className={`text-xl cursor-pointer ${
-                  page === "logout" ? "font-bold tracking-widest text-2xl" : ""
-                }`}
+                className={`text-xl cursor-pointer ${page === "logout" ? "font-bold tracking-widest text-2xl" : ""
+                  }`}
                 onClick={() => {
                   setpage("logout");
                 }}
@@ -101,7 +98,7 @@ export default function Profile() {
             <div className="w-full ">
               <div className="h-36 rounded-tl-3xl w-full bg-gray-200 relative ">
                 <img
-                  src={data?.image || dummyImage}
+                  src={data.image || dummyImage}
                   alt="Ngo Logo"
                   className="absolute rounded-full w-28 h-28 top-[85%] left-8"
                 ></img>
@@ -119,15 +116,14 @@ export default function Profile() {
               </div>
               <form
                 onSubmit={submit}
-                className={`gap-10 mt-36 w-full flex-col relative ${
-                  page === "profile" ? "flex" : "hidden"
-                }`}
+                className={`gap-10 mt-36 w-full flex-col relative ${page === "profile" ? "flex" : "hidden"
+                  }`}
               >
                 <div className="hidden sm:flex absolute -top-36 right-0 mt-4  gap-4 items-center">
                   <button
-                    className={`bg-gray-200 text-black font-semibold px-4 py-2 rounded-xl ${
-                      edit ? "hidden" : ""
-                    }`}
+                    type="button"
+                    className={`bg-gray-200 text-black font-semibold px-4 py-2 rounded-xl ${edit ? "hidden" : ""
+                      }`}
                     onClick={() => {
                       setEdit(true);
                     }}
@@ -135,6 +131,7 @@ export default function Profile() {
                     Cancel
                   </button>
                   <button
+                    type={!edit ? 'button' : 'submit'}
                     className="bg-black text-white px-4 py-2 rounded-xl"
                     onClick={() => {
                       edit ? setEdit(false) : setEdit(true);
@@ -151,12 +148,12 @@ export default function Profile() {
                     <input
                       disabled={edit}
                       ref={name}
-                      className={`w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg`}
+                      className={`w-full px-6 py-2 text-lg ${edit ? "text-gray-600" : ""
+                        }  bg-gray-100 rounded-lg`}
                       type="text"
-                      required
-                      defaultValue={data?.name}
+                      required={true}
+                      minLength={1}
+                      defaultValue={data.name}
                     ></input>
                   </div>
                 </div>
@@ -168,11 +165,10 @@ export default function Profile() {
                     <input
                       disabled={edit}
                       ref={website}
-                      className={`w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg`}
+                      className={`w-full px-6 py-2 text-lg ${edit ? "text-gray-600" : ""
+                        }  bg-gray-100 rounded-lg`}
                       type="url"
-                      defaultValue={data?.website}
+                      defaultValue={data.website}
                     ></input>
                   </div>
                 </div>
@@ -187,12 +183,12 @@ export default function Profile() {
                     <input
                       disabled={edit}
                       ref={image}
-                      className={`w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg`}
-                      type="url"
-                      required
-                      defaultValue={data?.image}
+                      className={`w-full px-6 py-2 text-lg ${edit ? "text-gray-600" : ""
+                        }  bg-gray-100 rounded-lg`}
+                      type="text"
+                      required={true}
+                      minLength={1}
+                      defaultValue={data.image}
                     ></input>
                   </div>
                 </div>
@@ -208,12 +204,12 @@ export default function Profile() {
                       rows={3}
                       disabled={edit}
                       ref={description}
-                      className={`w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg`}
+                      className={`w-full px-6 py-2 text-lg ${edit ? "text-gray-600" : ""
+                        }  bg-gray-100 rounded-lg`}
                       type="text"
-                      required
-                      defaultValue={data?.description}
+                      required={true}
+                      minLength={1}
+                      defaultValue={data.description}
                     ></textarea>
                   </div>
                 </div>
@@ -225,9 +221,8 @@ export default function Profile() {
                   <div className="w-full">
                     <input
                       disabled
-                      className={`w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg`}
+                      className={`w-full px-6 py-2 text-lg ${edit ? "text-gray-600" : ""
+                        }  bg-gray-100 rounded-lg`}
                       type="email"
                       value={email}
                     ></input>
@@ -241,12 +236,12 @@ export default function Profile() {
                     <input
                       disabled={edit}
                       ref={mobile}
-                      className={`w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg`}
+                      className={`w-full px-6 py-2 text-lg ${edit ? "text-gray-600" : ""
+                        }  bg-gray-100 rounded-lg`}
                       type="text"
-                      required
-                      defaultValue={data?.mobile}
+                      required={true}
+                      minLength={1}
+                      defaultValue={data.mobile}
                     ></input>
                   </div>
                 </div>
@@ -259,12 +254,12 @@ export default function Profile() {
                       rows={2}
                       disabled={edit}
                       ref={address}
-                      className={`w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg`}
+                      className={`w-full px-6 py-2 text-lg ${edit ? "text-gray-600" : ""
+                        }  bg-gray-100 rounded-lg`}
                       type="text"
-                      required
-                      defaultValue={data?.address}
+                      required={true}
+                      minLength={1}
+                      defaultValue={data.address}
                     ></textarea>
                   </div>
                 </div>
@@ -276,20 +271,19 @@ export default function Profile() {
                     <input
                       disabled={edit}
                       ref={pincode}
-                      className={`w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg`}
+                      className={`w-full px-6 py-2 text-lg ${edit ? "text-gray-600" : ""
+                        }  bg-gray-100 rounded-lg`}
                       type="text"
-                      required
-                      defaultValue={data?.pincode}
+                      required={true}
+                      minLength={1}
+                      defaultValue={data.pincode}
                     ></input>
                   </div>
                 </div>
               </form>
               <form
-                className={` gap-10 mt-36 w-full flex-col ${
-                  page === "password" ? "flex" : "hidden"
-                }`}
+                className={` gap-10 mt-36 w-full flex-col ${page === "password" ? "flex" : "hidden"
+                  }`}
               >
                 <div className="flex gap-12 w-full items-center">
                   <div className="text-xl tracking-wide font-medium w-1/2">
@@ -297,10 +291,10 @@ export default function Profile() {
                   </div>
                   <div className="w-full">
                     <input
-                      required
-                      className={`w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg password`}
+                      required={true}
+                      minLength={8}
+                      className={`w-full px-6 py-2 text-lg ${edit ? "text-gray-600" : ""
+                        }  bg-gray-100 rounded-lg password`}
                       type="text"
                       placeholder="New password"
                       onKeyDown={() => {
@@ -316,10 +310,10 @@ export default function Profile() {
                   <div className="w-full relative">
                     <input
                       type={confirmPasswordType}
-                      required
-                      className={`password-show w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg confirmPassword`}
+                      required={true}
+                      minLength={8}
+                      className={`password-show w-full px-6 py-2 text-lg ${edit ? "text-gray-600" : ""
+                        }  bg-gray-100 rounded-lg confirmPassword`}
                       placeholder="Confirm Password"
                       onKeyDown={() => {
                         setConfirmPassword(
@@ -339,9 +333,8 @@ export default function Profile() {
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className={`h-5 w-5 ${
-                          confirmPasswordType === "text" ? "hidden" : ""
-                        }`}
+                        className={`h-5 w-5 ${confirmPasswordType === "text" ? "hidden" : ""
+                          }`}
                         viewBox="0 0 20 20"
                         fill="currentColor"
                       >
@@ -354,9 +347,8 @@ export default function Profile() {
                       </svg>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className={`h-5 w-5 ${
-                          confirmPasswordType === "password" ? "hidden" : ""
-                        }`}
+                        className={`h-5 w-5 ${confirmPasswordType === "password" ? "hidden" : ""
+                          }`}
                         viewBox="0 0 20 20"
                         fill="currentColor"
                       >
@@ -374,18 +366,16 @@ export default function Profile() {
                 <div className="flex justify-between mb-12 ">
                   <div className="text-left">
                     <h1
-                      className={`text-xl ${
-                        passwordMatched ? "text-green-400" : "text-red-400"
-                      } ${password || confirmPassword ? "block" : "hidden"}`}
+                      className={`text-xl ${passwordMatched ? "text-green-400" : "text-red-400"
+                        } ${password || confirmPassword ? "block" : "hidden"}`}
                     >
                       Password{" "}
                       {`${passwordMatched ? "Matched" : "not matched"}`}
                     </h1>
                   </div>
                   <button
-                    className={`bg-black text-white px-4 py-2 rounded-xl ${
-                      passwordMatched ? "" : "hidden"
-                    }`}
+                    className={`bg-black text-white px-4 py-2 rounded-xl ${passwordMatched ? "" : "hidden"
+                      }`}
                   >
                     Save Changes
                   </button>

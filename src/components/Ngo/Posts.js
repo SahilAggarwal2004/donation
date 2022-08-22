@@ -1,13 +1,29 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import ngoLogo from "./images.jpg";
 import eventImage from "./download.jpg";
+import { setEvent } from "../../firebase";
+import useAuth from "../../hooks/useAuth";
+import { toast } from "react-toastify";
+import { useDataContext } from "../../context/ContextProvider";
+
 export default function Posts() {
   const [post, setPost] = useState("flex");
-  //   const [message, setMessage] = useState("block");
-  //   setTimeout(() => {
-  //     setMessage("hidden");
-  //   }, 1200);
+  const title = useRef()
+  const description = useRef()
+  const image = useRef()
+  const url = useRef()
+  const { ngo } = useAuth()
+  const { setNgoDataUpdated, ngoData: data } = useDataContext()
+
+  async function submit(event) {
+    event.preventDefault()
+    const { success, error } = await setEvent(ngo, title.current.value, description.current.value, image.current.value, url.current.value)
+    if (!success) return toast.error(error)
+    setNgoDataUpdated(true)
+    toast.success('New event added!')
+  }
+
   return (
     <>
       {/* <div
@@ -49,12 +65,12 @@ export default function Posts() {
                 Recent events
               </button>
             </div>
-            <div className="flex flex-col px-8 py-4  rounded-3xl shadow-xl w-full gap-6 ">
+            {data.events?.map(({ title, description, image, url, date }) => <div key={date} className="flex flex-col px-8 py-4  rounded-3xl shadow-xl w-full gap-6 ">
               <div className="flex gap-6 items-center">
                 <img src={ngoLogo} className="rounded-full w-16 h-16" />
                 <div className="flex flex-col p-1 gap-.5">
                   <div className="text-2xl tracking-wider text-gray-800 font-extralight">
-                    Donate India
+                    {data.name}
                   </div>
                   <div className="text-sm text-gray-500 tracking-wide">
                     2h ago
@@ -62,56 +78,19 @@ export default function Posts() {
                 </div>
               </div>
               <div>
-                <img src={eventImage} className="w-full h-64"></img>
+                <img src={image} className="w-full h-64"></img>
               </div>
               <div className="font-semibold text-2xl pl-3 font-mono">
-                Joei Events
+                {title}
               </div>
               <div className="font-light leading-7 -mt-3">
-                Joie Events is one of the leading NGO Award Function and event
-                management company in Delhi, India. We pleasure to help you in
-                managing NGO Award Function events with very reasonably prices.
-                We make strategies to make your NGO events success from every
-                perspective. We understand the social responsibility and for
-                this we organize NGO Award Function services at our best level.
-                First we decide the venue of the NGO award function as per the
-                requirement and nature of the NGO award ceremony.
+                {description}
               </div>
-            </div>
-            <div className="flex flex-col px-8 py-4  rounded-3xl shadow-xl w-full gap-6">
-              <div className="flex gap-6 items-center">
-                <img src={ngoLogo} className="rounded-full w-16 h-16" />
-                <div className="flex flex-col p-1 gap-.5">
-                  <div className="text-2xl tracking-wider text-gray-800 font-extralight">
-                    Donate India
-                  </div>
-                  <div className="text-sm text-gray-500 tracking-wide">
-                    2h ago
-                  </div>
-                </div>
-              </div>
-              <div>
-                <img src={eventImage} className="w-full h-64"></img>
-              </div>
-              <div className="font-semibold text-2xl pl-3 font-mono">
-                Joei Events
-              </div>
-              <div className="font-light leading-7 -mt-3">
-                Joie Events is one of the leading NGO Award Function and event
-                management company in Delhi, India. We pleasure to help you in
-                managing NGO Award Function events with very reasonably prices.
-                We make strategies to make your NGO events success from every
-                perspective. We understand the social responsibility and for
-                this we organize NGO Award Function services at our best level.
-                First we decide the venue of the NGO award function as per the
-                requirement and nature of the NGO award ceremony.
-              </div>
-            </div>
+            </div>)}
           </div>
           <div
-            className={`w-full sm:w-2/3 shadow-[-4px_0px_24px_rgba(0,0,0,.4)]  shadow-slate-300 rounded-3xl px-8 py-8 pt-16  flex-col gap-8 text-gray-600 relative ${
-              post === "flex" ? "hidden" : "flex"
-            }`}
+            className={`w-full sm:w-2/3 shadow-[-4px_0px_24px_rgba(0,0,0,.4)]  shadow-slate-300 rounded-3xl px-8 py-8 pt-16  flex-col gap-8 text-gray-600 relative ${post === "flex" ? "hidden" : "flex"
+              }`}
           >
             <div
               className="absolute top-7 right-10"
@@ -137,13 +116,14 @@ export default function Posts() {
             <h1 className="text-3xl font-serif  font-thin tracking-wide">
               New events
             </h1>
-            <form className="flex flex-col gap-8 w-full">
+            <form onSubmit={submit} className="flex flex-col gap-8 w-full">
               <div className="w-full">
                 <input
                   className={`w-full px-6 py-2 text-lg shadow-[0px_0px_12px_rgba(0,0,0,.2)]  bg-gray-100 rounded-lg outline-4 outline-gradient1b`}
                   type="text"
                   placeholder="Event Name"
                   required
+                  ref={title}
                 ></input>
               </div>
 
@@ -154,6 +134,7 @@ export default function Posts() {
                   type="text"
                   placeholder="Event description"
                   required
+                  ref={description}
                 ></textarea>
               </div>
               <div className="w-full">
@@ -162,6 +143,7 @@ export default function Posts() {
                   type="text"
                   placeholder="Event banner image url"
                   required
+                  ref={image}
                 ></input>
               </div>
               <div className="w-full">
@@ -169,9 +151,10 @@ export default function Posts() {
                   className={`w-full px-6 py-2 text-lg shadow-[0px_0px_12px_rgba(0,0,0,.2)]  bg-gray-100 rounded-lg outline-4 outline-gradient1b`}
                   type="text"
                   placeholder="Event url"
+                  ref={url}
                 ></input>
               </div>
-              <button className="bg-gradient-to-r from-gradient1a to-gradient1b text-white py-3 text-3xl tracking-widest font-mono uppercase rounded-3xl hover:-translate-y-1 transition-all duration-200 hover:scale-[1.01] ">
+              <button type='submit' className="bg-gradient-to-r from-gradient1a to-gradient1b text-white py-3 text-3xl tracking-widest font-mono uppercase rounded-3xl hover:-translate-y-1 transition-all duration-200 hover:scale-[1.01] ">
                 Submit
               </button>
             </form>
@@ -219,6 +202,5 @@ export default function Posts() {
           </div>
         </div>
       </div>
-    </>
-  );
+    </>)
 }

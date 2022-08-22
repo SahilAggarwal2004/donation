@@ -1,8 +1,13 @@
-import React, { useState, useEffect } from "react";
-import ngoImage from "../Ngo/images.jpg";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect, useRef } from "react";
+import { setUserData } from "../../firebase";
+import useAuth from "../../hooks/useAuth";
+import dummyImage from "../../images/dummy.webp";
+import { toast } from "react-toastify";
+import { useDataContext } from "../../context/ContextProvider";
 import LogOut from "../Ngo/LogOut";
 
-export default function UserProfile() {
+export default function Profile() {
   document.querySelector("body").style.overflowX = "hidden";
 
   const [edit, setEdit] = useState(true);
@@ -11,6 +16,29 @@ export default function UserProfile() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMatched, setPasswordMatched] = useState(false);
   const [confirmPasswordType, setConfirmPasswordType] = useState("password");
+  const { user, email } = useAuth();
+  const { userData: data, setUserDataUpdated } = useDataContext();
+  const name = useRef();
+  const image = useRef();
+  const mobile = useRef();
+  const address = useRef();
+  const pincode = useRef();
+
+  async function submit(event) {
+    event.preventDefault();
+    const { success } = await setUserData(
+      user,
+      name.current.value,
+      image.current.value,
+      mobile.current.value,
+      address.current.value,
+      pincode.current.value
+    );
+    if (!success) return toast.error("Some error occurred...");
+    setUserDataUpdated(true);
+    toast.success("Profile updated successfully!");
+  }
+
   useEffect(() => {
     if (
       password === confirmPassword &&
@@ -22,6 +50,7 @@ export default function UserProfile() {
       setPasswordMatched(false);
     }
   }, [password, confirmPassword]);
+
   return (
     <>
       <div className={`${page === "logout" ? "" : "hidden"}`}>
@@ -33,9 +62,8 @@ export default function UserProfile() {
           <div className="flex flex-col sm:flex-row gap-12 sm:gap-28 mt-8">
             <div className="flex flex-row sm:flex-col  gap-5 tracking-wider">
               <div
-                className={`text-xl cursor-pointer ${
-                  page === "profile" ? "font-bold tracking-widest text-2xl" : ""
-                }`}
+                className={`text-xl cursor-pointer ${page === "profile" ? "font-bold tracking-widest text-2xl" : ""
+                  }`}
                 onClick={() => {
                   setpage("profile");
                 }}
@@ -43,11 +71,10 @@ export default function UserProfile() {
                 Profile
               </div>
               <div
-                className={`hidden sm:block text-xl cursor-pointer ${
-                  page === "password"
-                    ? "font-bold tracking-widest text-2xl"
-                    : ""
-                }`}
+                className={`hidden sm:block text-xl cursor-pointer ${page === "password"
+                  ? "font-bold tracking-widest text-2xl"
+                  : ""
+                  }`}
                 onClick={() => {
                   setpage("password");
                 }}
@@ -55,9 +82,8 @@ export default function UserProfile() {
                 Password
               </div>
               <div
-                className={`text-xl cursor-pointer ${
-                  page === "logout" ? "font-bold tracking-widest text-2xl" : ""
-                }`}
+                className={`text-xl cursor-pointer ${page === "logout" ? "font-bold tracking-widest text-2xl" : ""
+                  }`}
                 onClick={() => {
                   setpage("logout");
                 }}
@@ -68,8 +94,8 @@ export default function UserProfile() {
             <div className="w-full ">
               <div className="h-36 rounded-tl-3xl w-full bg-gray-200 relative ">
                 <img
-                  src={ngoImage}
-                  alt="Ngo Logo"
+                  src={data.image || dummyImage}
+                  alt="User Logo"
                   className="absolute rounded-full w-28 h-28 top-[85%] left-8"
                 ></img>
                 <div className="absolute top-full left-44 mt-4 flex flex-col gap-1">
@@ -77,7 +103,7 @@ export default function UserProfile() {
                     Donate India
                   </h1>
                   <h1 className="sm:hidden  font-light tracking-widest text-xs">
-                    Update is not possible in mobile
+                    Update is not possible in mobile browser
                   </h1>
                   <h1 className="hidden md:block font-light tracking-widest text-xs">
                     Update you profile and personnel details
@@ -85,15 +111,15 @@ export default function UserProfile() {
                 </div>
               </div>
               <form
-                className={` gap-10 relative mt-36 w-full flex-col ${
-                  page === "profile" ? "flex" : "hidden"
-                }`}
+                onSubmit={submit}
+                className={`gap-10 mt-36 w-full flex-col relative ${page === "profile" ? "flex" : "hidden"
+                  }`}
               >
-                <div className="hidden sm:flex absolute -top-32 right-0 mt-4  gap-4 items-center">
+                <div className="hidden sm:flex absolute -top-36 right-0 mt-4  gap-4 items-center">
                   <button
-                    className={`bg-gray-200 text-black font-semibold px-4 py-2 rounded-xl ${
-                      edit ? "hidden" : ""
-                    }`}
+                    type="button"
+                    className={`bg-gray-200 text-black font-semibold px-4 py-2 rounded-xl ${edit ? "hidden" : ""
+                      }`}
                     onClick={() => {
                       setEdit(true);
                     }}
@@ -101,9 +127,8 @@ export default function UserProfile() {
                     Cancel
                   </button>
                   <button
-                    className={`bg-black text-white px-4 py-2 rounded-xl ${
-                      page === "profile" ? "" : "hidden"
-                    }`}
+                    type={!edit ? 'button' : 'submit'}
+                    className="bg-black text-white px-4 py-2 rounded-xl"
                     onClick={() => {
                       edit ? setEdit(false) : setEdit(true);
                     }}
@@ -113,55 +138,55 @@ export default function UserProfile() {
                 </div>
                 <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 w-full ">
                   <div className="text-xl tracking-wide font-medium w-full sm:w-1/2">
-                    Name
+                    Organisation Name
                   </div>
                   <div className="w-full">
                     <input
                       disabled={edit}
-                      className={`w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg`}
+                      ref={name}
+                      className={`w-full px-6 py-2 text-lg ${edit ? "text-gray-600" : ""
+                        }  bg-gray-100 rounded-lg`}
                       type="text"
-                      value="Shivansh Arora"
+                      required={true}
+                      minLength={1}
+                      defaultValue={data.name}
                     ></input>
                   </div>
                 </div>
-
                 <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 w-full ">
                   <div className="text-xl tracking-wide font-medium w-full sm:w-1/2">
-                    <div>Profile Image Url</div>
+                    <div>Logo Url</div>
                     <div className="font-light tracking-widest text-base mt-1">
-                      This will be displayed on your profile
+                      This will be displayed on your profile{" "}
                     </div>
                   </div>
                   <div className="w-full">
                     <input
                       disabled={edit}
-                      className={`w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg`}
-                      type="url"
-                      value="profile.webp"
+                      ref={image}
+                      className={`w-full px-6 py-2 text-lg ${edit ? "text-gray-600" : ""
+                        }  bg-gray-100 rounded-lg`}
+                      type="text"
+                      required={true}
+                      minLength={1}
+                      defaultValue={data.image}
                     ></input>
                   </div>
                 </div>
-
                 <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 w-full ">
                   <div className="text-xl tracking-wide font-medium w-full sm:w-1/2">
                     <div>Email</div>
                   </div>
                   <div className="w-full">
                     <input
-                      disabled={edit}
-                      className={`w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg`}
+                      disabled
+                      className={`w-full px-6 py-2 text-lg ${edit ? "text-gray-600" : ""
+                        }  bg-gray-100 rounded-lg`}
                       type="email"
-                      value="care@donateindia.com"
+                      value={email}
                     ></input>
                   </div>
                 </div>
-
                 <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 w-full ">
                   <div className="text-xl tracking-wide font-medium w-full sm:w-1/2">
                     <div>Contact No</div>
@@ -169,42 +194,13 @@ export default function UserProfile() {
                   <div className="w-full">
                     <input
                       disabled={edit}
-                      className={`w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg`}
+                      ref={mobile}
+                      className={`w-full px-6 py-2 text-lg ${edit ? "text-gray-600" : ""
+                        }  bg-gray-100 rounded-lg`}
                       type="text"
-                      value="8612635623"
-                    ></input>
-                  </div>
-                </div>
-                <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 w-full ">
-                  <div className="text-xl tracking-wide font-medium w-full sm:w-1/2">
-                    <div>Alternate Contact No</div>
-                  </div>
-                  <div className="w-full">
-                    <input
-                      disabled={edit}
-                      className={`w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg`}
-                      type="tel"
-                      value="6545812721"
-                    ></input>
-                  </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 w-full ">
-                  <div className="text-xl tracking-wide font-medium w-full sm:w-1/2">
-                    <div>Locality</div>
-                  </div>
-                  <div className="w-full">
-                    <input
-                      disabled={edit}
-                      className={`w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg`}
-                      type="tel"
-                      value="Janakpuri"
+                      required={true}
+                      minLength={1}
+                      defaultValue={data.mobile}
                     ></input>
                   </div>
                 </div>
@@ -216,11 +212,13 @@ export default function UserProfile() {
                     <textarea
                       rows={2}
                       disabled={edit}
-                      className={`w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg`}
+                      ref={address}
+                      className={`w-full px-6 py-2 text-lg ${edit ? "text-gray-600" : ""
+                        }  bg-gray-100 rounded-lg`}
                       type="text"
-                      value="C-4 , Street no.10,Block C , Janakpuri , New Delhi"
+                      required={true}
+                      minLength={1}
+                      defaultValue={data.address}
                     ></textarea>
                   </div>
                 </div>
@@ -231,19 +229,20 @@ export default function UserProfile() {
                   <div className="w-full">
                     <input
                       disabled={edit}
-                      className={`w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg`}
+                      ref={pincode}
+                      className={`w-full px-6 py-2 text-lg ${edit ? "text-gray-600" : ""
+                        }  bg-gray-100 rounded-lg`}
                       type="text"
-                      value="110058"
+                      required={true}
+                      minLength={1}
+                      defaultValue={data.pincode}
                     ></input>
                   </div>
                 </div>
               </form>
               <form
-                className={` gap-10 mt-36 w-full flex-col ${
-                  page === "password" ? "flex" : "hidden"
-                }`}
+                className={` gap-10 mt-36 w-full flex-col ${page === "password" ? "flex" : "hidden"
+                  }`}
               >
                 <div className="flex gap-12 w-full items-center">
                   <div className="text-xl tracking-wide font-medium w-1/2">
@@ -251,10 +250,10 @@ export default function UserProfile() {
                   </div>
                   <div className="w-full">
                     <input
-                      required
-                      className={`w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg password`}
+                      required={true}
+                      minLength={8}
+                      className={`w-full px-6 py-2 text-lg ${edit ? "text-gray-600" : ""
+                        }  bg-gray-100 rounded-lg password`}
                       type="text"
                       placeholder="New password"
                       onKeyDown={() => {
@@ -270,10 +269,10 @@ export default function UserProfile() {
                   <div className="w-full relative">
                     <input
                       type={confirmPasswordType}
-                      required
-                      className={`password-show w-full px-6 py-2 text-lg ${
-                        edit ? "text-gray-600" : ""
-                      }  bg-gray-100 rounded-lg confirmPassword`}
+                      required={true}
+                      minLength={8}
+                      className={`password-show w-full px-6 py-2 text-lg ${edit ? "text-gray-600" : ""
+                        }  bg-gray-100 rounded-lg confirmPassword`}
                       placeholder="Confirm Password"
                       onKeyDown={() => {
                         setConfirmPassword(
@@ -293,9 +292,8 @@ export default function UserProfile() {
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className={`h-5 w-5 ${
-                          confirmPasswordType === "text" ? "hidden" : ""
-                        }`}
+                        className={`h-5 w-5 ${confirmPasswordType === "text" ? "hidden" : ""
+                          }`}
                         viewBox="0 0 20 20"
                         fill="currentColor"
                       >
@@ -308,9 +306,8 @@ export default function UserProfile() {
                       </svg>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className={`h-5 w-5 ${
-                          confirmPasswordType === "password" ? "hidden" : ""
-                        }`}
+                        className={`h-5 w-5 ${confirmPasswordType === "password" ? "hidden" : ""
+                          }`}
                         viewBox="0 0 20 20"
                         fill="currentColor"
                       >
@@ -328,18 +325,16 @@ export default function UserProfile() {
                 <div className="flex justify-between mb-12 ">
                   <div className="text-left">
                     <h1
-                      className={`text-xl ${
-                        passwordMatched ? "text-green-400" : "text-red-400"
-                      } ${password || confirmPassword ? "block" : "hidden"}`}
+                      className={`text-xl ${passwordMatched ? "text-green-400" : "text-red-400"
+                        } ${password || confirmPassword ? "block" : "hidden"}`}
                     >
                       Password{" "}
                       {`${passwordMatched ? "Matched" : "not matched"}`}
                     </h1>
                   </div>
                   <button
-                    className={`bg-black text-white px-4 py-2 rounded-xl ${
-                      passwordMatched ? "" : "hidden"
-                    }`}
+                    className={`bg-black text-white px-4 py-2 rounded-xl ${passwordMatched ? "" : "hidden"
+                      }`}
                   >
                     Save Changes
                   </button>

@@ -55,9 +55,13 @@ export async function getUserData(uid) {
     } catch { return { success: false } }
 }
 
-export async function setUserData(uid, name, mobile, pincode, address) {
+export async function setUserData(uid, name, image, mobile, address, pincode) {
     try {
-
+        const ref = doc(db, `/users/${uid}`)
+        const info = await getDoc(ref)
+        if (info.exists()) await updateDoc(ref, { name, image, mobile, address, pincode })
+        else await setDoc(ref, { name, image, mobile, address, pincode })
+        return { success: true }
     } catch { return { success: false } }
 }
 
@@ -162,7 +166,7 @@ export async function getNgoData(uid) {
 
 export async function setNgoData(uid, name, website, image, description, mobile, address, pincode) {
     try {
-        const ref = doc(db, `/users/${uid}`)
+        const ref = doc(db, `/ngos/${uid}`)
         const info = await getDoc(ref)
         if (info.exists()) await updateDoc(ref, { name, website, image, description, mobile, address, pincode })
         else await setDoc(ref, { name, website, image, description, mobile, address, pincode })
@@ -175,12 +179,12 @@ export async function setEvent(uid, title, description, image, url) {
         const ref = doc(db, `/ngos/${uid}`)
         const info = await getDoc(ref)
         const event = { title, description, image, url, date: Date.now() }
-        let events;
         if (info.exists()) {
-            events = info.data().events || []
+            const events = info.data().events || []
             events.push(event)
             await updateDoc(ref, { events })
+            return { success: true, events }
         }
-        return { success: true, events }
-    } catch { return { success: false } }
+        return { success: false, error: 'Complete your profile first' }
+    } catch { return { success: false, error: 'Some error occurred...' } }
 }

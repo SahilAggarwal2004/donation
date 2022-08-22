@@ -1,19 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-export default function TrackDonationCard(props) {
-  const {
-    status: status,
-    description: description,
-    ngoname: ngoname,
-    ngoid: ngoid,
-    dateDonationAccepted: dateDonationAccepted,
-    dateDonationCompleted: dateDonationCompleted,
-  } = props.info;
+import { toast } from "react-toastify";
+import { useDataContext } from "../../context/ContextProvider";
+import { completeDonation, getNgoData } from "../../firebase";
+import useAuth from "../../hooks/useAuth";
+
+export default function TrackDonationCard({ id, status, description, ngoid, date }) {
   function capitalise(value) {
     return value[0].toUpperCase() + value.substring(1);
   }
   const [color] = useState(status === "active" ? "red" : "green");
   const [dropDown, setDropDown] = useState("up");
+  const [data, setData] = useState({})
+  const { user } = useAuth()
+  const password = useRef()
+  const { setUserDataUpdated } = useDataContext()
+
+  useEffect(() => {
+    getNgoData(ngoid).then(({ success, data }) => { if (success) setData(data) })
+  })
+
+  async function submit(event) {
+    event.preventDefault()
+    const { success, error } = await completeDonation(user, id, password.current.value)
+    if (!success) return toast.error(error)
+    setUserDataUpdated(true)
+    toast.success('Donation initiated')
+  }
 
   return (
     <div
@@ -31,25 +44,25 @@ export default function TrackDonationCard(props) {
         </div>
 
         <Link to={`/ngo/${ngoid}`} className="text-2xl text-gray-600 ">
-          {capitalise(ngoname)}
+          {capitalise(data?.name)}
         </Link>
       </div>
       <div className="flex flex-col sm:flex-row  gap-4">
         <div className={` font-bold text-xl font-mono text-${color}-400`}>
-          Description
+          {description}
         </div>
         <div className="text-xl">{capitalise(description)}</div>
       </div>
-      <form
-        className={`flex flex-col sm:flex-row sm:items-center gap-6 mt-2  ${
-          status === "active" ? "" : "hidden"
-        }`}
+      <form onSubmit={submit}
+        className={`flex flex-col sm:flex-row sm:items-center gap-6 mt-2  ${status === "active" ? "" : "hidden"
+          }`}
       >
         <h1 className={`text-${color}-400 text-2xl font-bold`}>OTP</h1>
         <div className="flex flex-col sm:flex-row w-full gap-10 ">
           <input
-            type="text "
+            type="password"
             className="w-full px-4 py-2 bg-red-50 focus:bg-white focus:outline-4 focus:outline-red-300 rounded-xl"
+            ref={password}
           />
           <button
             className={`bg-${color}-400 rounded-xl text-white px-6 py-2 uppercase text-xl`}
@@ -107,16 +120,16 @@ export default function TrackDonationCard(props) {
       >
         <div className={`flex flex-col sm:flex-row gap-4 `}>
           <div className={` font-bold text-xl font-mono text-${color}-400`}>
-            Date donation accepted
+            Date
           </div>
-          <div className="text-lg">{dateDonationAccepted}</div>
+          <div className="text-lg">{new Date(date).toLocaleString()}</div>
         </div>
-        <div className="flex flex-col sm:flex-row gap-4 ">
+        {/* <div className="flex flex-col sm:flex-row gap-4 ">
           <div className={` font-bold text-xl font-mono text-${color}-400`}>
             Date donation completed
           </div>
           <div className="text-lg"> {dateDonationCompleted}</div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
