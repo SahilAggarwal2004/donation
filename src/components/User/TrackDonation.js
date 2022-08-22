@@ -3,12 +3,13 @@ import { useDataContext } from "../../context/ContextProvider";
 import TrackDonationCard from "./TrackDonationCard";
 
 const TrackDonation = () => {
+  const abc = useDataContext()
   const { userData } = useDataContext()
   const donations = userData?.donations
 
   useEffect(() => {
-    console.log(userData)
-  }, [userData])
+    console.log(abc)
+  }, [abc])
 
   return (
     <div className="max-w-6xl mx-16 my-10 xl:mx-auto flex gap-4 xl:gap-16 ">

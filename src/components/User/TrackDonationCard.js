@@ -7,7 +7,7 @@ import useAuth from "../../hooks/useAuth";
 
 export default function TrackDonationCard({ id, status, description, ngoid, date }) {
   function capitalise(value) {
-    return value[0].toUpperCase() + value.substring(1);
+    return value?.[0]?.toUpperCase() + value?.substring(1);
   }
   const [color] = useState(status === "active" ? "red" : "green");
   const [dropDown, setDropDown] = useState("up");
