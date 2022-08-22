@@ -9,7 +9,6 @@ const Register = ({ type }) => {
   const navigate = useNavigate()
   const email = useRef()
   const password = useRef()
-    toast('Register first before making a donation')
   async function submit(event) {
     event.preventDefault()
     if (type === 'User') {
@@ -18,7 +17,6 @@ const Register = ({ type }) => {
       toast.success('Signed up successfully!')
       navigate('/user')
     } else if (type === 'Ngo') {
-      toast('Register first before listing your NGO')
       const { success, error } = await signupNgo(email.current.value, password.current.value)
       if (!success) return toast.error(error)
       toast.success('Signed up successfully!')

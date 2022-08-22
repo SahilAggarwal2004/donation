@@ -9,7 +9,6 @@ const Login = ({ type }) => {
   const navigate = useNavigate()
   const email = useRef()
   const password = useRef()
-  toast('Login first before making a donation')
   async function submit(event) {
     event.preventDefault()
     if (type === 'User') {
