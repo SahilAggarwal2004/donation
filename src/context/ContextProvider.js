@@ -11,9 +11,9 @@ const ContextProvider = props => {
     const navigate = useNavigate()
     const location = useLocation()
     const { user, ngo } = useAuth()
-    const notLogged = ['/', '/user/signup', '/user/login', '/ngo/signup', '/ngo/login', '/ngo/all', '/ngo/id/:uid']
-    const userLogged = ['/user', '/user/profile', '/ngo/id/:uid', '/user/donate', '/user/donations', '/user/money', '/ngo/all']
-    const ngoLogged = ['/ngo', '/ngo/profile', '/ngo/id/:uid', '/ngo/all', '/ngo/dashboard', '/ngo/dashmore']
+    const notLogged = ['/', '/user/signup', '/user/login', '/ngo/signup', '/ngo/login', '/ngos', '/ngo/id/:uid']
+    const userLogged = ['/user', '/user/profile', '/ngo/id/:uid', '/user/donate', '/user/donations', '/user/money', '/ngos']
+    const ngoLogged = ['/ngo', '/ngo/profile', '/ngo/id/:uid', '/ngos', '/ngo/dashboard', '/ngo/dashmore']
     const [userData, setUserData] = useState()
     const [ngoData, setNgoData] = useState()
     const [userDataUpdated, setUserDataUpdated] = useState(true)
