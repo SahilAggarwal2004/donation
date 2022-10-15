@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../User/Navbar";
 import dummyImage from "../../images/dummy.webp";
 import { getNgos } from "../../firebase";
-
+import Logo from "../Logo";
 const Allngo = () => {
   const [dashboardAnimation, setDashboardAnimation] = useState("");
   const [ngos, setNgos] = useState();
@@ -20,6 +20,38 @@ const Allngo = () => {
 
   return (
     <>
+      <div>
+        <div className="flex border-b-4 drop-shadow-lg justify-between px-12">
+          <Link to="/">
+            <div className="flex m-4">
+              <Logo dimension={2} />
+              <p className="flex items-center font-bold text-xl justify-center mx-3">
+                DoNation
+              </p>
+            </div>
+          </Link>
+
+          <div className="flex justify-center items-center ">
+            <ul className="flex items-center">
+              <a href="#about">
+                <li className="mx-4 -my-2 font-semibold hover:underline cursor-pointer text-lg">
+                  About
+                </li>
+              </a>
+              <Link to="/ngos">
+                <li className="mx-4 -my-2 font-semibold hover:underline cursor-pointer text-lg">
+                  NGOs
+                </li>
+              </Link>
+              <a href="#testimonials">
+                <li className="mx-4 -my-2 font-semibold hover:underline cursor-pointer text-lg">
+                  Testimonials
+                </li>
+              </a>
+            </ul>
+          </div>
+        </div>
+      </div>
       {/* Animation of dahboard for showing palete */}
       <div className={`my-24 sm:mt-8 px-16 ${dashboardAnimation}`}>
         <div class=" shadow-2xl rounded-md p-12 max-w-lg w-full ">

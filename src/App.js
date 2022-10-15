@@ -45,7 +45,7 @@ function App() {
           <Route path="/ngo/dashboard" element={<Dashboard />} />
           <Route path="/ngo/profile" element={<Profile />} />
           <Route path="/ngo" element={<Posts />} />
-          <Route path="/ngos" element={<Allngo />} />
+          <Route path="/partners" element={<Allngo />} />
           <Route path="/ngo/dashmore" element={<DashBoardMoreDetails />} />
           <Route path="/user/profile" element={<UserProfile />} />
           <Route path="/user" element={<UserHome />} />
